@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            .container {
+                background-color:aquamarine;
+                width: 60%;
+                height: 1200px;
+                padding-top: 75px;
+                padding-left: 80px;
+                padding-right: 80px;
+                margin: 0 auto;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            h1 {
+                text-align: center;
+                font-size: 56px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class = container>
+            <h1>謝謝您的購買！</h1>
+            <p id = "output1" ></p>
+            <p id = "output2"></p>
+            <p id = "output3"></p>
+        </div>
+
+        
+
+        <script>
+            // var pdt1n = localStorage.getItem("spdt1");
+            // document.getElementById("pdt1").textContent = pdt1n;
+            // var pdt2n = localStorage.getItem("spdt2");
+            // document.getElementById("pdt2").textContent = pdt2n;
+            // var pdt3n = localStorage.getItem("spdt3");
+            // document.getElementById("pdt3").textContent = pdt3n;
+            // var rs = localStorage.getItem("Key");
+            const getdata = JSON.parse(localStorage.getItem("profile2Key"))
+            const getdata2 = JSON.parse(localStorage.getItem("productKey"))
+
+            document.getElementById("output1").innerHTML = '<p style="font-size: 35px;" >收件人：' + getdata.姓名  + 
+            '<br>商品一：' + getdata.商品一購買數量  + '件<br>' + '商品二：' +
+            getdata.商品二購買數量 + '件<br>' + '商品三：' + getdata.商品三購買數量 + '件<br>' + 
+            '訂單總金額：' + getdata2.總金額 + '<br>寄送地址：' + getdata.寄送地址 + '<br>超取方式：' + getdata.超取方式 + '</p>';
+        </script>
+    </body>
+</html>

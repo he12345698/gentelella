@@ -1,0 +1,157 @@
+<html>
+    <h1>購物車頁面</h1>
+    <h2>已購買的商品</h2>
+
+<body>
+
+    <form id = "finalform" action="orderdetail.html">
+        <table border = 1 >
+            <tr>
+                <th>商品圖片</th>
+                <th>商品名稱</th>
+                <th>價格</th>
+                <th>數量</th>
+            </tr>
+            <tr>
+                <td><img src="https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/978A0A5B-9FDC-4D51-991F-E23EAC95127D/Derivates/903D5A89-9D56-4E16-8C15-8E4ACEE12575.jpg" width="150" height="150"></td>
+                <td>商品1</td>
+                <td>NT$ 100</td>
+                <td>
+                    <a id = "pdt1"></a>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="https://green-n-safe.com/uploads/images/thumbs/0004568_0004340_%E5%8D%83%E5%B1%A4%E8%94%A5%E6%B2%B9%E9%A4%85.jpeg" width="150" height="150"></td>
+                <td>商品2</td>
+                <td>NT$ 200</td>
+                <td>
+                    <a id = "pdt2"></a>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="https://green-n-safe.com/uploads/images/thumbs/0004568_0004340_%E5%8D%83%E5%B1%A4%E8%94%A5%E6%B2%B9%E9%A4%85.jpeg" width="150" height="150"></td>
+                <td>商品3</td>
+                <td>NT$ 300</td>
+                <td>
+                    <a id = "pdt3"></a>
+                </td>
+            </tr>
+        </table>
+        
+        <p><input name = "cname" id = "cname" style="display: none;"></p>
+        <p><input name = "product1" id = "product1" style="display: none;"></p>
+        <p><input name = "product2" id = "product2" style="display: none;"></p>
+        <p><input name = "product3" id = "product3" style="display: none;"></p>
+
+        <h2>取貨方式</h2>
+        <p><label for = "shipping_method">
+            超商取貨：
+        </label></p>
+        <select name = "shipping_method" id = "shipping_method">
+            <option value="全家" selected>全家</option>
+            <option value="7-11">7-11</option>
+            <option value="萊爾富">萊爾富</option>
+            <option value="OK">OK</option>
+        </select>
+        <h2>宅配地址</h2>
+        <p><label for = "addres">請輸入地址：</label></p>
+        <p><input type = "text" name = "addres" id = "addres" placeholder="請輸入寄送地址"></p>
+        <p><input type="submit" value="送出"></p>
+
+        </form>
+        <p id = "output" ></p>
+        <p id = "output2"></p>
+        <p id = "output3"></p>
+    <script>
+        var pdt1n = localStorage.getItem("spdt1");
+        document.getElementById("pdt1").textContent = pdt1n;
+        var pdt2n = localStorage.getItem("spdt2");
+        document.getElementById("pdt2").textContent = pdt2n;
+        var pdt3n = localStorage.getItem("spdt3");
+        document.getElementById("pdt3").textContent = pdt3n;
+        var rs = localStorage.getItem("Key");
+
+        //console.log(rs);
+        const getdata = JSON.parse(localStorage.getItem("profileKey"))
+        const getdata2 = JSON.parse(localStorage.getItem("Key"))
+        document.getElementById("cname").value = getdata.姓名;
+        document.getElementById("product1").value = getdata2.spdt1;
+        document.getElementById("product2").value = getdata2.spdt2;
+        document.getElementById("product3").value = getdata2.spdt3;
+
+        function submitForm(event) {
+            event.preventDefault(); // 防止表單提交
+
+            var addresvalue = document.getElementById("addres").value;
+            if(addresvalue === "") {
+                alert("請輸入地址");
+            } else {
+                const form = event.target;
+                const formData = new FormData(form);
+                const params = new URLSearchParams(formData).toString();
+                console.log(params)
+                
+                //formData1.append("addres", rs);
+                //const getdata = JSON.parse(localStorage.getItem("profileKey"))
+                //const getdata2 = JSON.parse(localStorage.getItem("Key"))
+                //console.log(getdata);
+                //const re = JSON.stringify(getdata);
+
+                document.getElementById("output2").innerHTML = '<strong>姓名：</strong>' + getdata.姓名;
+                document.getElementById("output3").innerHTML = '<strong>商品一：</strong>' + getdata2.spdt1 + '件<br>' + '<strong>商品二：</strong>' + getdata2.spdt2 + '件<br>' + '<strong>商品三：</strong>' + getdata2.spdt3 + '件<br>';
+                
+                var marketInputvalue = document.getElementById("shipping_method").value;
+                var addresInputvalue = document.getElementById("addres").value;
+                var nameInputvalue = document.getElementById("cname").value;
+                var product1Inputvalue = document.getElementById("product1").value;
+                var product2Inputvalue = document.getElementById("product2").value;
+                var product3Inputvalue = document.getElementById("product3").value;
+                const profile2 = {
+                    "姓名":nameInputvalue,
+                    "商品一購買數量":product1Inputvalue,
+                    "商品二購買數量":product2Inputvalue,
+                    "商品三購買數量":product3Inputvalue,
+                    "超取方式":marketInputvalue,
+                    "寄送地址":addresInputvalue
+                }
+                const profile2String = JSON.stringify(profile2); //把array字串化
+                localStorage.setItem('profile2Key',profile2String);
+
+                const url = `https://httpbin.org/post`;
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                })
+                    .then(response => response.json())
+
+                    .then(data12 => {
+                        console.log('Response1:', data12);
+                        const outputDiv = document.getElementById("output");
+                        outputDiv.innerHTML = `
+                        <h3>訂購成功!</H3>
+                        <p><strong>寄送地址:</strong> ${data12.form.addres}</p>
+                        <p><strong>寄送方式:</strong> ${data12.form.shipping_method}</p>
+                        <p><strong>訂單編號:</strong> ${data12.headers["X-Amzn-Trace-Id"]}</p>
+                        `;
+                        document.getElementById("finalform").submit();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                    
+            }
+
+            
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("finalform").addEventListener("submit", submitForm);
+        });
+
+    </script>
+</body>
+</html>

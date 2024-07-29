@@ -1,0 +1,142 @@
+<html>
+<head>
+    <style>
+        a {
+            color: red;
+            }
+
+        body {  
+                background-image:url(/HTML/D20240712/hw/Reflux%20Free%20Website%20Template%20-%20Free-CSS.com/templatemo_531_reflux/image/S__4603923.jpg);
+                background-size: cover;
+                background-position: center;
+                margin: 0;
+                padding: 0;
+            }
+
+        .container {
+                font-size: 25px;
+                background-color:rgba(241, 183, 126, 0.7);
+                width: 60%;
+                height: 1200px;
+                padding-top: 75px;
+                padding-left: 80px;
+                padding-right: 80px;
+                margin: 0 auto;
+            }
+
+        #username, #password {
+                width: 250px; /* 設置寬度 */
+                height: 35px; /* 設置高度 */
+                font-size: 18px; /* 調整字體大小 */
+                padding: 10px; /* 增加內邊距 */
+            }
+        .checkbox {
+            transform: scale(1.5);
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+
+        }
+
+        label {
+            vertical-align:text-top;
+        }
+
+        select {
+            margin-top: 0px;
+            width: 80px; /* 調整寬度 */
+            height: 35px; /* 調整高度 */
+            font-size: 23px;
+            text-align-last: center;
+            text-align: center;
+        }
+
+        p {
+            margin-top: 8px;
+        }
+
+        input[type="radio"] {
+            width: 15px;
+            height: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class = container >
+    <h1>註冊表單</h1>
+
+    <form id="signupform" method="get" action="product.html" onsubmit="checkInput(event)" >
+        <label for="username"><a>*</a>使用者名稱：</label>
+        <p><input type="text" id="username" name="username" placeholder="輸入使用者名稱(必填)"></p>
+            
+        <label for="password"><a>*</a>密碼：</label>
+        <p><input type="password" id="password" name="password" placeholder="輸入密碼(必填)"></p>
+         
+        
+        <label for="location">你來自：</label>
+        <select name = "location" id = "location">
+            <option value="台北">台北</option>
+            <option value="台中">台中</option>
+            <option value="台南">台南</option>
+            <option value="高雄">高雄</option>
+        </select><p></p>
+        
+        <legend><label for="sex"><a>*</a>性別：</label></legend>
+        <label><input type="radio" id="sexm" name="sex" value="man">男性</label>
+        <label><input type="radio" id="sexf" name="sex" value="female">女性</label>
+        <label><input type="radio" id="sexo" name="sex" value="other">其他</label>
+        
+        <p>
+        <legend><label for="interest">選擇興趣愛好(可複選)：</label></legend>
+        <label><input type="checkbox" id="interest1" name="inter" value="read" class = "checkbox">閱讀</label>
+        <label><input type="checkbox" id="interest2" name="inter" value="travel" class = "checkbox">旅行</label>
+        <label><input type="checkbox" id="interest3" name="inter" value="sport" class = "checkbox">運動</label>
+        </p>
+
+        <p><label for="textarea">自我介紹：</label></p>
+        <textarea name = "textarea"  id ="textarea" rows = 6 cols = 40 placeholder="介紹自己吧~"></textarea>
+    
+        <p><input type="submit" value="送出"></p>
+    </form>
+    </div>
+
+    <script>
+        function checkInput(event) {
+            event.preventDefault();
+
+            var argName = document.getElementById("username").value;
+            var argPw = document.getElementById("password").value;
+            var argSex = document.querySelector('input[name="sex"]:checked');
+            var argLoc = document.getElementById("location").value;
+            var argInter = document.querySelector('input[name="inter"]:checked');
+
+            if(argName === "") {
+                alert("請輸入姓名");
+                
+            } else if(argPw === "") {
+                alert("請輸入密碼");
+
+            } else if(argSex == null){
+                alert("請輸入性別");
+
+            } else {
+                const profile = {
+                    "姓名":argName,
+                    "密碼":argPw,
+                    "性別":argSex.value,
+                    "興趣":argInter.value,
+                    "居住地":argLoc
+
+                }
+                const profileString = JSON.stringify(profile); //把array字串化
+                localStorage.setItem('profileKey',profileString);
+                document.getElementById("signupform").submit();
+
+            }
+
+        }
+    </script>
+</body>
+</html>
